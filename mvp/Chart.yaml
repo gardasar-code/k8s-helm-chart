@@ -1,0 +1,11 @@
+apiVersion: v2
+name: mvp
+description: MVP Demo
+version: 0.1.0
+dependencies:
+  - name: api-backend
+    version: 0.1.0
+    repository: "file://charts/api-backend"
+  - name: web-frontend
+    version: 0.1.0
+    repository: "file://charts/web-frontend"
