@@ -10,7 +10,7 @@ env:
   OWNER: ${{ github.repository_owner }}
   IMAGE_API: api-backend
   IMAGE_WEB: web-frontend
-  HELM_CHART_DIR: .
+  HELM_CHART_DIR: mvp
   HELM_PACKAGE_NAME: mvp
 
 jobs:
@@ -81,12 +81,12 @@ jobs:
       - name: Patch Chart.yaml & values.yaml with version
         run: |
           VERSION=${{ steps.vars.outputs.VERSION }}
-          sed -i "s/^version: .*/version: ${VERSION}/" Chart.yaml
-          sed -i "s/version: [0-9.]\+/version: ${VERSION}/g" Chart.yaml
-          find . -name values.yaml | while read f; do
+          sed -i "s/^version: .*/version: ${VERSION}/" mvp/Chart.yaml
+          sed -i "s/version: [0-9.]\+/version: ${VERSION}/g" mvp/Chart.yaml
+          find mvp -name values.yaml | while read f; do
             sed -i "s/tag: \".*\"/tag: \"${VERSION}\"/g" "$f"
           done
-          find . -name Chart.yaml | grep -v '^./Chart.yaml$' | while read f; do
+          find mvp -name Chart.yaml | grep -v '^mvp/Chart.yaml$' | while read f; do
             sed -i "s/^version: .*/version: ${VERSION}/" "$f"
           done
 
@@ -95,7 +95,7 @@ jobs:
           VERSION=${{ steps.vars.outputs.VERSION }}
           OWNER=${{ github.repository_owner }}
           REPO=$(basename $GITHUB_REPOSITORY)
-          find . -name values.yaml | while read f; do
+          find mvp -name values.yaml | while read f; do
             sed -i "s|repository: .*api-backend|repository: ghcr.io/${OWNER}/${REPO}/api-backend|g" "$f"
             sed -i "s|repository: .*web-frontend|repository: ghcr.io/${OWNER}/${REPO}/web-frontend|g" "$f"
             sed -i "s/tag: \".*\"/tag: \"${VERSION}\"/g" "$f"
