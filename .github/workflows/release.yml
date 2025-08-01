@@ -41,20 +41,24 @@ jobs:
         with:
           context: ./api-backend
           file: ./api-backend/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
+          provenance: false
           tags: |
-            ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ env.IMAGE_API }}:${{ steps.vars.outputs.VERSION }}
             ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ env.IMAGE_API }}:latest
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ env.IMAGE_API }}:${{ steps.vars.outputs.VERSION }}
 
       - name: Build and push Web Frontend
         uses: docker/build-push-action@v5
         with:
           context: ./web-frontend
           file: ./web-frontend/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
+          provenance: false
           tags: |
-            ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ env.IMAGE_WEB }}:${{ steps.vars.outputs.VERSION }}
             ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ env.IMAGE_WEB }}:latest
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ env.IMAGE_WEB }}:${{ steps.vars.outputs.VERSION }}
 
   package-and-release-helm:
     name: Package & Release Helm Chart
