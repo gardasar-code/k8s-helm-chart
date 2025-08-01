@@ -96,8 +96,8 @@ jobs:
           OWNER=${{ github.repository_owner }}
           REPO=$(basename $GITHUB_REPOSITORY)
           find mvp -name values.yaml | while read f; do
-            sed -i "s|repository: .*api-backend|repository: ghcr.io/${OWNER}/${REPO}/api-backend|g" "$f"
-            sed -i "s|repository: .*web-frontend|repository: ghcr.io/${OWNER}/${REPO}/web-frontend|g" "$f"
+            sed -i "s|repository: .*api-backend|repository: ghcr.io/${OWNER}/api-backend|g" "$f"
+            sed -i "s|repository: .*web-frontend|repository: ghcr.io/${OWNER}/web-frontend|g" "$f"
             sed -i "s/tag: \".*\"/tag: \"${VERSION}\"/g" "$f"
           done
 
