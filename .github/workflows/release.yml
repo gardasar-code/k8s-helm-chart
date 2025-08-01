@@ -106,6 +106,13 @@ jobs:
           helm dependency update ${{ env.HELM_CHART_DIR }}
           helm package ${{ env.HELM_CHART_DIR }} --version ${{ steps.vars.outputs.VERSION }}
 
+      - name: Log in to GHCR for Helm OCI
+        run: echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push Helm chart to GHCR (OCI)
+        run: |
+          helm push ./${{ env.HELM_PACKAGE_NAME }}-${{ steps.vars.outputs.VERSION }}.tgz oci://ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
+
       - name: Generate changelog
         id: changelog
         run: |
